@@ -35,12 +35,14 @@ if 0 %% plot individual BTF model function curve
     [path,BTF0] = getBTF(imga, imgb);
     % visualize image
     imgBTF = zeros(size(BTF0));
-    for i = 1 : length(path)
-        imgBTF(path(i,1),path(i,2)) = 1;
+    for i = 1 : 3
+        for j = 1 : length(path{i})
+            imgBTF(path{i}(j,1),path{i}(j,2),i) = 1;
+        end
+        
+        figure();
+        imshow(imgBTF(:,:,i));
     end
-    
-    figure();
-    imshow(imgBTF);
 end
 
 %% calculate offset from diagonal axis
@@ -52,7 +54,7 @@ end
 % featureOrizDist = orizSum/norm(orizSum,2);
 
 %% codes for multiple paired images
-if 0
+if 1
     % for imageA
     pathNameA = uigetdir(pwd);
     
@@ -74,17 +76,17 @@ if 0
         [path,BTF0] = getBTF( imga, imgb);
         % visualize image
         imgBTF = zeros(size(BTF0));
-        for i = 1 : length(path)
-            imgBTF(path(i,1),path(i,2)) = 1;
+        for i = 1 : 3
+            for j = 1 : length(path{i})
+                imgBTF(path{i}(j,1),path{i}(j,2),i) = 1;
+            end
         end
         % figure();
         % imshow(imgBTF);
         
-        if imgCount == 1
-            imgArray = imgBTF;
-        else
-            imgArray = cat(3,imgArray,imgBTF);
-        end
+        
+        imgArray{imgCount} = imgBTF;
+        
         % vertSum = sum(imgBTF,1);
         % orizSum = sum(imgBTF,2);
         % orizSum = orizSum';
@@ -105,20 +107,23 @@ end
 % from H2 to H1, looping down through 2nd column
 % find cords in 1st column
 % assuming given path
-clear sums;
-newPath = flipud(path);
-[binCnt, binIdx]=hist(path(:,2),unique(path(:,2)));
-sums = zeros(768,1);
-for ii = 1 : 10
-    % for ii = 1 : length(newPath)
-    if newPath(ii+1,2) == newPath(ii,2)
-        if sums(newPath(ii,2)) == 0
-            sums(newPath(ii,2)) = newPath(ii,1);
+if 0
+    clear sums;
+    newPath = flipud(path);
+    [binCnt, binIdx]=hist(path(:,2),unique(path(:,2)));
+    sums = zeros(768,1);
+    for ii = 1 : 10
+        % for ii = 1 : length(newPath)
+        if newPath(ii+1,2) == newPath(ii,2)
+            if sums(newPath(ii,2)) == 0
+                sums(newPath(ii,2)) = newPath(ii,1);
+            else
+                sums(newPath(ii,2)) = sums(newPath(ii,2)) + newPath(ii+1,1);
+            end
         else
-            sums(newPath(ii,2)) = sums(newPath(ii,2)) + newPath(ii+1,1);
+            sums(newPath(ii,2)) = newPath(ii,1);
         end
-    else
-        sums(newPath(ii,2)) = newPath(ii,1);
+        
     end
     
 end
@@ -132,66 +137,3 @@ end
 
 
 
-
-
-
-
-
-
-
-
-
-
-% pcolor(imgBTF0);
-% colormap(gray);
-% h = colorbar;
-% % ylabel(h,'shortest path');
-% axis ij
-% axis square
-
-
-
-
-
-
-
-
-
-
-
-% image = img0a;
-% %figure();
-% %imshow(image);
-% %% Split into RGB Channels
-% Red = image(:,:,1);
-% Green = image(:,:,2);
-% Blue = image(:,:,3);
-% %% Get histValues for each channel
-% [yRed, x] = imhist(Red);
-% [yGreen, x] = imhist(Green);
-% [yBlue, x] = imhist(Blue);
-% %% Plot them together in one plot
-% %figure();
-% %plot(x, yRed, 'Red', x, yGreen, 'Green', x, yBlue, 'Blue');
-%
-% h0a = cat(1, yRed, yGreen, yBlue);
-%
-% image = img0b;
-% %figure();
-% %imshow(image);
-% %% Split into RGB Channels
-% Red = image(:,:,1);
-% Green = image(:,:,2);
-% Blue = image(:,:,3);
-% %% Get histValues for each channel
-% [yRed, x] = imhist(Red);
-% [yGreen, x] = imhist(Green);
-% [yBlue, x] = imhist(Blue);
-% %% Plot them together in one plot
-% %figure();
-% %plot(x, yRed, 'Red', x, yGreen, 'Green', x, yBlue, 'Blue');
-%
-% h0b = cat(1, yRed, yGreen, yBlue);
-% matH0a = repmat(h0a, 1, size(h0b));
-% matH0b = repmat(h0b', size(h0a), 1);
-% matCorrelation = abs(matH0a-matH0b);
