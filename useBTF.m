@@ -25,11 +25,15 @@ for i = 1 : 256
     end
 end
 path = pathCords(2:length(pathCords),:); % path(:,1) is value in h2
+% interploate missing points from 1,1 to 256,256
+while(path(1,2)~=1)
+    path = [[1 , path(1,2)-1];path];
+end
 % path(:,2) is value in h1
 % clear A,B;
 % clear sums;
 % newPath = flipud(path);
-[binCnt, binIdx]=hist(path(:,2),unique(path(:,2)));
+[binCnt, binIdx] = hist(path(:,2),unique(path(:,2)));
 lut = zeros(256,1);
 A   = path(:,1)';
 
