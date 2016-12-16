@@ -27,7 +27,7 @@ if 0
     end
 end
 
-if 0 %% plot individual BTF model function curve
+if 1 %% plot individual BTF model function curve
     imga = imread('001_a.bmp');
     imgb = imread('001_b.bmp');
     
@@ -40,9 +40,11 @@ if 0 %% plot individual BTF model function curve
             imgBTF(path{i}(j,1),path{i}(j,2),i) = 1;
         end
         
-        figure();
-        imshow(imgBTF(:,:,i));
+        % display image
+%         figure();
+%         imshow(imgBTF(:,:,i));
     end
+    save ('imgTestBTF1.mat', 'imgBTF');
 end
 
 %% calculate offset from diagonal axis
@@ -54,7 +56,7 @@ end
 % featureOrizDist = orizSum/norm(orizSum,2);
 
 %% codes for multiple paired images
-if 1
+if 0
     % for imageA
     pathNameA = uigetdir(pwd);
     
@@ -103,30 +105,32 @@ if 1
     
 end
 
-%% Compensate image by using BTF
-% from H2 to H1, looping down through 2nd column
-% find cords in 1st column
-% assuming given path
-if 0
-    clear sums;
-    newPath = flipud(path);
-    [binCnt, binIdx]=hist(path(:,2),unique(path(:,2)));
-    sums = zeros(768,1);
-    for ii = 1 : 10
-        % for ii = 1 : length(newPath)
-        if newPath(ii+1,2) == newPath(ii,2)
-            if sums(newPath(ii,2)) == 0
-                sums(newPath(ii,2)) = newPath(ii,1);
-            else
-                sums(newPath(ii,2)) = sums(newPath(ii,2)) + newPath(ii+1,1);
-            end
-        else
-            sums(newPath(ii,2)) = newPath(ii,1);
-        end
-        
-    end
-    
-end
+
+% replaced by useBTF
+% %% Compensate image by using BTF
+% % from H2 to H1, looping down through 2nd column
+% % find cords in 1st column
+% % assuming given path
+% if 0
+%     clear sums;
+%     newPath = flipud(path);
+%     [binCnt, binIdx]=hist(path(:,2),unique(path(:,2)));
+%     sums = zeros(768,1);
+%     for ii = 1 : 10
+%         % for ii = 1 : length(newPath)
+%         if newPath(ii+1,2) == newPath(ii,2)
+%             if sums(newPath(ii,2)) == 0
+%                 sums(newPath(ii,2)) = newPath(ii,1);
+%             else
+%                 sums(newPath(ii,2)) = sums(newPath(ii,2)) + newPath(ii+1,1);
+%             end
+%         else
+%             sums(newPath(ii,2)) = newPath(ii,1);
+%         end
+%         
+%     end
+%     
+% end
 
 
 

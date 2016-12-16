@@ -3,7 +3,7 @@ function [score] = useBTF(inputBTF, inputImg1, comImg2, channel)
 % since row direction is H1 and col direction is H2
 % H2(n)=f(H1(m)) mapping from H1 to H2
 % assuming given path
-% Input : inputImg1 -- image to transfer by BTF 
+% Input : inputImg1 -- image to transfer by BTF
 %       : inputBTF  -- the BTF for each channel
 %       : comImg2   -- the image to compare with transfered result
 %       : channel   -- 1 is R, 2 is G, and 3 is B
@@ -47,7 +47,7 @@ B = cumsum(binCnt); % B provides end index for sum
 lut(1) = sum(A(1:B(1)));
 for ii = 2 : length(lut)
     lut(ii) = sum(A((B(ii-1)+1):B(ii))); % B(ii-1)+1 is start index
-    disp(ii);
+    %     disp(ii);
 end
 lut = round(lut./binCnt')-1;
 
@@ -61,11 +61,19 @@ imgTest = inputImg1;
 imgCali = zeros([rowT, colT, cT]);
 for i = 1 : rowT
     for j = 1 : colT
-        imgCali(i,j,channel) = lut(imgTest(i,j,channel));
+%         if i == 2 && j == 26
+%               fprintf('stop here');
+%         end
+        imgCali(i,j,channel) = lut(imgTest(i,j,channel)+1);
+%         fprintf('i = %d, j = %d\n',i,j);
     end
 end
-figure();
-imshow(uint8(imgCali(:,:,1)));
+
+% %% display image
+% figure();
+% imshow(uint8(imgCali(:,:,channel)));
+
+
 % imgTest2= imread('010_b.bmp'); % for test
 imgTest2 = comImg2;
 score = corr2(imgCali(:,:,channel),imgTest2(:,:,channel));
