@@ -1,8 +1,8 @@
-function [pathTtl, matTtlCor] = getBTF( img1, img2 )
-% getBTF Extracting BTF from paired images
-%   Input: paired images
-%   Output: BTF - extracted BTF cov matrix
-%           pathTTl - cell contains pathCordsR, pathCordsG, pathCordsB
+% function [pathTtl, matTtlCor] = getMBTF( img1, img2 )
+% getCBTF Extracting MBTF from paired images
+%   Input : paired images
+%   Output: MBTF - extracted MBTF 
+%           pathTtl - cell contains pathCordsR, pathCordsG, pathCordsB 
 %                     shortest path coordinates
 BTFtype = 'BTF';
 

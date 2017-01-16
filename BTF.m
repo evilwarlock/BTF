@@ -27,12 +27,14 @@ if 0
     end
 end
 
-if 1 %% plot individual BTF model function curve
-    imga = imread('001_a.bmp');
-    imgb = imread('001_b.bmp');
+if 0 %% plot individual BTF model function curve
+    imga = imread('000_a.bmp');
+    imgb = imread('000_b.bmp');
     
     % extract BTF
-    [path,BTF0] = getBTF(imga, imgb);
+%     [path,BTF0] = getBTF(imga, imgb); % get BTF
+    [path,BTF0] = getCBTF( imga, imgb, 1, 1); % get CBTF
+
     % visualize image
     imgBTF = zeros(size(BTF0));
     for i = 1 : 3
@@ -40,7 +42,7 @@ if 1 %% plot individual BTF model function curve
             imgBTF(path{i}(j,1),path{i}(j,2),i) = 1;
         end
         
-        % display image
+%         %% display image
 %         figure();
 %         imshow(imgBTF(:,:,i));
     end
@@ -56,7 +58,7 @@ end
 % featureOrizDist = orizSum/norm(orizSum,2);
 
 %% codes for multiple paired images
-if 0
+if 1
     % for imageA
     pathNameA = uigetdir(pwd);
     
@@ -74,8 +76,12 @@ if 0
     for imgCount = 1 : length(imageNamesA)-2
         imga = imread(strcat(pathNameA,'\',imageNamesA{imgCount+2,1}));
         imgb = imread(strcat(pathNameB,'\',imageNamesB{imgCount+2,1}));
-        % extract BTF
-        [path,BTF0] = getBTF( imga, imgb);
+        % extract CBTF
+        [path,BTF0] = getCBTF( imga, imgb, imgCount, length(imageNamesA)-2);
+        
+%         % extract BTF
+%         [path,BTF0] = getBTF( imga, imgb);
+
         % visualize image
         imgBTF = zeros(size(BTF0));
         for i = 1 : 3
@@ -89,15 +95,9 @@ if 0
         
         imgArray{imgCount} = imgBTF;
         
-        % vertSum = sum(imgBTF,1);
-        % orizSum = sum(imgBTF,2);
-        % orizSum = orizSum';
-        %
-        % featureVertDist = vertSum/norm(vertSum,2);
-        % featureOrizDist = orizSum/norm(orizSum,2);
-        %
-        
-        
+        if imgCount == length(imageNamesA)-2
+            save ('imgBTF.mat', 'imgBTF');
+        end
         
     end
     

@@ -1,4 +1,4 @@
-function [score] = useBTF(inputBTF, inputImg1, comImg2, channel)
+function [score, outputImg] = useBTF(inputBTF, inputImg1, comImg2, channel)
 %% Compensate image by using BTF
 % since row direction is H1 and col direction is H2
 % H2(n)=f(H1(m)) mapping from H1 to H2
@@ -8,7 +8,7 @@ function [score] = useBTF(inputBTF, inputImg1, comImg2, channel)
 %       : comImg2   -- the image to compare with transfered result
 %       : channel   -- 1 is R, 2 is G, and 3 is B
 % Output: correlaion score
-
+%       : imgCali   -- output BTF transfered image
 %% generate look up table from BTFs
 % clc;
 % clear all;
@@ -77,6 +77,8 @@ end
 % imgTest2= imread('010_b.bmp'); % for test
 imgTest2 = comImg2;
 score = corr2(imgCali(:,:,channel),imgTest2(:,:,channel));
+outputImg = imgCali;
+
 % matRGBt = reshape(sums, [256, 3]);
 % matRGBt(:,2) = matRGBt(:,2) - 256;
 % matRGBt(:,3) = matRGBt(:,3) - 512;
