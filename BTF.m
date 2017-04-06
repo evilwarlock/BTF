@@ -1,3 +1,5 @@
+%%% script to extract BTF from images folders
+
 clc;
 clear all;
 close all;
@@ -32,8 +34,8 @@ if 0 %% plot individual BTF model function curve
     imgb = imread('000_b.bmp');
     
     % extract BTF
-%     [path,BTF0] = getBTF(imga, imgb); % get BTF
-    [path,BTF0] = getCBTF( imga, imgb, 1, 1); % get CBTF
+    [path,BTF0] = getBTF(imga, imgb); % get BTF
+%     [path,BTF0] = getCBTF( imga, imgb, 1, 1); % get CBTF
 
     % visualize image
     imgBTF = zeros(size(BTF0));
@@ -42,11 +44,11 @@ if 0 %% plot individual BTF model function curve
             imgBTF(path{i}(j,1),path{i}(j,2),i) = 1;
         end
         
-%         %% display image
-%         figure();
-%         imshow(imgBTF(:,:,i));
+        %% display image
+        figure();
+        imshow(imcomplement(imgBTF(:,:,i)));
     end
-    save ('imgTestBTF1.mat', 'imgBTF');
+%     save ('imgTestBTF1.mat', 'imgBTF');
 end
 
 %% calculate offset from diagonal axis
@@ -57,7 +59,7 @@ end
 % featureVertDist = vertSum/norm(vertSum,2);
 % featureOrizDist = orizSum/norm(orizSum,2);
 
-%% codes for multiple paired images
+%% codes for multiple paired images from 2 folders
 if 1
     % for imageA
     pathNameA = uigetdir(pwd);
@@ -76,10 +78,10 @@ if 1
     for imgCount = 1 : length(imageNamesA)-2
         imga = imread(strcat(pathNameA,'\',imageNamesA{imgCount+2,1}));
         imgb = imread(strcat(pathNameB,'\',imageNamesB{imgCount+2,1}));
-        % extract CBTF
+        % extract CBTF %% comment out when generating BTF array 
         [path,BTF0] = getCBTF( imga, imgb, imgCount, length(imageNamesA)-2);
         
-%         % extract BTF
+%         % extract BTF %%comment out when generating CBTF
 %         [path,BTF0] = getBTF( imga, imgb);
 
         % visualize image
@@ -96,12 +98,12 @@ if 1
         imgArray{imgCount} = imgBTF;
         
         if imgCount == length(imageNamesA)-2
-            save ('imgBTF.mat', 'imgBTF');
+            save ('imgCBTF_VIPER.mat', 'imgBTF');
         end
         
     end
     
-    save ('imgArrayBTF.mat', 'imgArray');
+    save ('imgArrayBTF_VIPER.mat', 'imgArray');
     
 end
 
